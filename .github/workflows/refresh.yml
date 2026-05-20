@@ -1,8 +1,8 @@
 name: TRMNL Refresh
 on:
   schedule:
-    - cron: '0 * * * *' # Once an hour
-  workflow_dispatch:   # The "Run Now" button
+    - cron: '0 * * * *'
+  workflow_dispatch:
 
 jobs:
   render:
@@ -13,7 +13,14 @@ jobs:
         with:
           node-version: '24'
       - run: npm install
-      - run: node capture.js
+      
+      - name: Capture Dashboard
+        run: node capture.js
         env:
           DASHBOARD_URL: ${{ secrets.DASHBOARD_URL }}
-          TRMNL_WEBHOOK: ${{ secrets.TRMNL_WEBHOOK }}
+          
+      - name: Force 4-bit Grayscale
+        run: convert raw.png -colorspace Gray -colors 16 -depth 4 final.png
+        
+      - name: Push to TRMNL
+        run: curl -X POST -H "Content-Type: image/png" --data-binary @final.png "${{ secrets.TRMNL_WEBHOOK }}"
