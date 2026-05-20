@@ -23,4 +23,5 @@ jobs:
         run: convert raw.png -colorspace Gray -colors 16 -depth 4 final.png
         
       - name: Push to TRMNL
-        run: curl -X POST -H "Content-Type: image/png" --data-binary @final.png "${{ secrets.TRMNL_WEBHOOK }}"
+        run: |
+          curl -X POST -H "Content-Type: image/png" --data-binary @final.png "${{ secrets.TRMNL_WEBHOOK }}"
