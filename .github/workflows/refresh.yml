@@ -14,10 +14,14 @@ jobs:
         with:
           node-version: '24'
           
-      - run: npm install
+      - name: Install Dependencies
+        run: npm install
       
+      - name: Clear Corrupted Puppeteer Cache
+        run: rm -rf ~/.cache/puppeteer
+
       - name: Provision Headless Chrome
-        run: npx puppeteer browsers install chrome
+        run: npx puppeteer install chrome
 
       - name: Install ImageMagick
         run: sudo apt-get update && sudo apt-get install -y imagemagick
