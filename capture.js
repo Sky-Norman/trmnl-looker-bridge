@@ -20,4 +20,7 @@ async function run() {
   await browser.close();
 }
 
-run().catch(console.error);
+run().catch(error => {
+  console.error("FATAL EXTRACTION ERROR:", error);
+  process.exit(1); 
+});
