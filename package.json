@@ -1,4 +1,8 @@
 {
+  "name": "trmnl-looker-bridge",
+  "version": "1.0.0",
+  "description": "Headless Looker extraction for TRMNL",
+  "main": "capture.js",
   "dependencies": {
     "puppeteer": "^22.0.0"
   }
