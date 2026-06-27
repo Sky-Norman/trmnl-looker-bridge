@@ -17,13 +17,19 @@ jobs:
       - name: Install Dependencies
         run: npm install
         
-      - name: Install ImageMagick
-        run: sudo apt-get update && sudo apt-get install -y imagemagick
+      - name: Provision Headless Chrome Locally
+        run: npx puppeteer browsers install chrome
+        env:
+          PUPPETEER_CACHE_DIR: ${{ github.workspace }}/.cache/puppeteer
+
+      - name: Install OS Dependencies & ImageMagick
+        run: sudo apt-get update && sudo apt-get install -y imagemagick libnss3 libnspr4 libgbm1 libasound2t64
         
       - name: Capture Dashboard
         run: node capture.js
         env:
           DASHBOARD_URL: ${{ secrets.DASHBOARD_URL }}
+          PUPPETEER_CACHE_DIR: ${{ github.workspace }}/.cache/puppeteer
           
       - name: Force 4-bit Grayscale
         run: convert raw.png -colorspace Gray -colors 16 -depth 4 final.png
